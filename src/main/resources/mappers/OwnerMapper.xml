@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.community.mapper.OwnerMapper">
+    <!-- House实体和数据库house表的映射关系 -->
+    <resultMap id="ownerResult" type="Owner">
+        <result column="id" property="id"></result>
+        <result column="username" property="userName"></result>
+        <result column="tel" property="tel"></result>
+        <result column="sex" property="sex"></result>
+        <result column="identity" property="identity"></result>
+        <result column="house_id" property="houseId"></result>
+        <result column="remarks" property="remarks"></result>
+        <result column="password" property="password"></result>
+        <result column="numbers" property="numbers"></result>
+    </resultMap>
+
+    <select id="selectAll" resultMap="ownerResult">
+        SELECT o.*,h.numbers FROM owner AS o LEFT JOIN house AS h ON o.house_id = h.id
+        <where>
+            <if test="tel != null and tel != '' and tel != 'null'">
+                and tel like '${tel}%'
+            </if>
+            <if test="identity != null and identity != ''">
+                and identity like '${identity}%'
+            </if>
+        </where>
+        limit #{start},#{size}
+    </select>
+
+    <select id="count" resultType="int">
+        select count(id) from owner
+        <where>
+            <if test="tel != null and tel != '' and tel != 'null'">
+                and tel like '%{tel}%'
+            </if>
+            <if test="identity != null and identity != ''">
+                and identity like '${identity}%'
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertOwner">
+        insert into owner (username, sex, tel, identity, house_id)
+        values (#{userName}, #{sex}, #{tel}, #{identity}, #{houseId})
+    </insert>
+
+    <delete id="deleteOwner">
+        delete
+        from owner
+        where id = #{id}
+    </delete>
+
+    <update id="updateOwner">
+        update owner
+        set username = #{userName},
+            sex = #{sex},
+            tel =  #{tel},
+            identity = #{identity},
+            house_id = #{houseId}
+        where id = #{id}
+    </update>
+
+    <select id="selectById" resultMap="ownerResult">
+        select * from owner where id = #{id}
+    </select>
+</mapper>

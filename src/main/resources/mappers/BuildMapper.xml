@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.community.mapper.BuildMapper">
+    <!-- Build实体和数据库building表的映射关系 -->
+    <resultMap id="buildResult" type="Build">
+        <result column="id" property="id"></result>
+        <result column="numbers" property="numbers"></result>
+        <result column="units" property="units"></result>
+        <result column="remarks" property="remarks"></result>
+    </resultMap>
+    <select id="selectAll" resultMap="buildResult">
+        SELECT * FROM building LIMIT #{start },#{size}
+    </select>
+
+    <select id="selectCount" resultType="int">
+        SELECT COUNT(id) FROM building
+    </select>
+
+    <insert id="insertBuild">
+        insert into building (numbers,units) values (#{numbers},#{units})
+    </insert>
+
+    <update id="updateBuild">
+        update building set numbers = #{numbers},units =#{units} where id = #{id}
+    </update>
+
+    <delete id="deleteBuild">
+        delete from building where id =#{id}
+    </delete>
+
+    <select id="selectBuildById" resultMap="buildResult">
+        select * from building where id = #{id}
+    </select>
+</mapper>

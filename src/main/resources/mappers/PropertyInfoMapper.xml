@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.community.mapper.PropertyInfoMapper">
+    <!-- PropertyInfo实体和数据库property_info表的映射关系 -->
+    <resultMap id="propertyInfoResult" type="PropertyInfo">
+        <result column="id" property="id"></result>
+        <result column="type_id" property="typeId"></result>
+        <result column="money" property="money"></result>
+        <result column="start_date" property="startDate"></result>
+        <result column="end_date" property="endDate"></result>
+        <result column="status" property="status"></result>
+        <result column="house_id" property="houseId"></result>
+        <result column="remarks" property="remarks"></result>
+        <result column="property_type" property="propertyType"></result>
+        <result column="house_numbers" property="houseNumbers"></result>
+        <result column="owner_name" property="ownerName"></result>
+    </resultMap>
+
+    <select id="selectAll" resultMap="propertyInfoResult">
+        SELECT property_info.id,house.numbers AS house_numbers, owner.username AS owner_name,property_type.name AS
+        property_type,property_info.start_date,property_info.end_date,property_info.money,property_info.status
+        FROM property_info,property_type,house,owner
+        WHERE property_info.type_id = property_type.id and property_info.house_id = house.id and owner.house_id =
+        house.id
+        <if test="numbers != null and numbers != ''  and numbers != 'null' ">
+            and numbers = #{numbers}
+        </if>
+        <if test="status != null and status != '' and status != 'null' ">
+            and property_info.status = #{status}
+        </if>
+        limit #{start},#{size}
+    </select>
+    <select id="count" resultType="int">
+        SELECT count(*)
+        FROM property_info,property_type,house,owner
+        WHERE property_info.type_id = property_type.id and property_info.house_id = house.id and owner.house_id =
+        house.id
+        <if test="numbers != null and numbers != '' and numbers != 'null' ">
+            and numbers = #{numbers}
+        </if>
+        <if test="status != null and status != ''and status != 'null' ">
+            and property_info.status = #{status}
+        </if>
+    </select>
+
+    <insert id="insertPropertyInfo">
+        insert into property_info (house_id, type_id, start_date, end_date, money, status)
+        values (#{houseId}, #{typeId}, #{startDate}, #{endDate}, #{money}, #{status})
+    </insert>
+
+    <delete id="deletePropertyInfo">
+        delete
+        from property_info
+        where id = #{id}
+    </delete>
+
+    <update id="updatePropertyInfo">
+        update property_info
+        set house_id   = #{houseId},
+            type_id    = #{typeId},
+            start_date = #{startDate},
+            end_date   = #{endDate},
+            money      = #{money},
+            status     = #{status}
+        where id = #{id}
+    </update>
+    <select id="selectById" resultMap="propertyInfoResult">
+        select *
+        from property_info
+        where id = #{id}
+    </select>
+</mapper>

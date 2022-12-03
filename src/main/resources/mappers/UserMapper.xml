@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.community.mapper.UserMapper">
+    <!-- User实体和数据库userinfo表的映射关系 -->
+    <resultMap id="userResult" type="User">
+        <result column="id" property="id"></result>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+        <result column="type" property="type"></result>
+        <result column="remarks" property="remarks"></result>
+    </resultMap>
+
+    <select id="selectByNameAndPwd" resultMap="userResult">
+        SELECT *
+        FROM userinfo
+        WHERE username = #{username}
+          AND password = #{passwd}
+    </select>
+
+    <select id="selectAll" resultMap="userResult">
+        SELECT *
+        FROM userinfo LIMIT #{start},#{size}
+    </select>
+
+    <select id="selectCount" resultType="int">
+        SELECT COUNT(id)
+        FROM userinfo
+    </select>
+
+    <insert id="insertUser">
+        insert into userinfo (username, password)
+        values (#{username}, #{password})
+    </insert>
+
+    <update id="updateUser">
+        update userinfo
+        set username = #{username},
+            password =#{password}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUser">
+        delete
+        from userinfo
+        where id = #{id}
+    </delete>
+
+    <select id="selectUserById" resultMap="userResult">
+        select *
+        from userinfo
+        where id = #{id}
+    </select>
+</mapper>

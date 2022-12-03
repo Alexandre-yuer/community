@@ -1,0 +1,23 @@
+
+server:
+  port: 8080
+
+spring:
+  # ???????
+  datasource:
+    # ???????
+    type: com.zaxxer.hikari.HikariDataSource
+    # ?????????
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/community?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+
+# mybatisPlus????
+mybatis-plus:
+  mapper-locations: classpath:mappers/*.xml
+  type-aliases-package: com.woniu.community.entity
+
+  # ??mybatis??
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
